@@ -1,5 +1,8 @@
 plugins {
     id("java")
+    id("application")
+    id("java-library")
+    id("org.graalvm.buildtools.native") version "0.10.1"
 }
 
 group = "com.github.professorsam"
@@ -12,6 +15,15 @@ repositories {
 dependencies {
     implementation("args4j:args4j:2.37")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+}
+
+graalvmNative {
+    binaries {
+        named("main") {
+            imageName.set("fileshare")
+            mainClass.set("com.github.professorsam.fileShareCli.FileShareCli")
+        }
+    }
 }
 
 tasks.compileJava {
