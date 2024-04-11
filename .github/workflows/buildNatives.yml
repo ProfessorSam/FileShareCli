@@ -23,8 +23,11 @@ jobs:
       - name: Build FileShareCli
         run: ./gradlew nativeCompile
 
+      - name: Debug
+        run: ls -alR
+
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
           name: fileshare-${{ matrix.os }}
-          path: fileshare*
+          path: ./build/native/nativeCompile/fileshare*
