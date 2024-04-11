@@ -21,7 +21,7 @@ graalvmNative {
     binaries {
         named("main") {
             imageName.set("fileshare")
-            mainClass.set("com.github.professorsam.fileShareCli.FileShareCli")
+            mainClass.set("com.github.professorsam.filesharecli.FileShareCli")
         }
     }
 }
