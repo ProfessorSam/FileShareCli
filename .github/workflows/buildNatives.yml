@@ -6,7 +6,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest] #windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +21,7 @@ jobs:
           native-image-job-reports: 'true'
 
       - name: Build FileShareCli
-        run: ./gradlew nativeCompile
+        run: ./gradlew nativeBuild
 
       - name: Debug
         run: ls -alR
