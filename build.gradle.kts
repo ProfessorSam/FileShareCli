@@ -1,7 +1,6 @@
 plugins {
     id("java")
     id("application")
-    id("java-library")
     id("org.graalvm.buildtools.native") version "0.10.1"
 }
 
@@ -18,10 +17,18 @@ dependencies {
 }
 
 graalvmNative {
+    binaries.all {
+        resources.autodetect()
+    }
     binaries {
         named("main") {
             imageName.set("fileshare")
             mainClass.set("com.github.professorsam.filesharecli.FileShareCli")
+            javaLauncher.set(javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(17))
+                vendor.set(JvmVendorSpec.matching("Oracle Corporation"))
+            })
+            sharedLibrary.set(false)
         }
     }
 }

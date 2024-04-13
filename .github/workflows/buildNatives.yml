@@ -21,7 +21,7 @@ jobs:
           native-image-job-reports: 'true'
 
       - name: Build FileShareCli
-        run: ./gradlew nativeBuild
+        run: ./gradlew nativeCompile
 
       - name: Debug
         run: tree
@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: fileshare-${{ matrix.os }}
-          path: ./build/native/nativeCompile/fileshare*
+          path: ./build/native/nativeCompile/*
