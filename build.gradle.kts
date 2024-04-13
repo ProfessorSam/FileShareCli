@@ -12,7 +12,6 @@ repositories {
 }
 
 dependencies {
-    implementation("args4j:args4j:2.37")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
 

@@ -1,9 +1,6 @@
 package com.github.professorsam.filesharecli;
 
 import okhttp3.*;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
-import org.kohsuke.args4j.Option;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,27 +9,15 @@ import java.time.temporal.ChronoUnit;
 
 public class FileShareCli {
 
-    @Option(name = "-e", aliases = "--expire", usage = "Set the expire date")
     private String date;
-    @Option(name = "-d", aliases = "--downloads", usage = "Max download amount")
     private int downloads;
-    @Option(name = "-f", aliases = "--file", usage = "File to upload", required = true)
     private File file;
     public static void main(String[] args) {
         new FileShareCli().entry(args);
     }
 
     private void entry(String[] args){
-        CmdLineParser parser = new CmdLineParser(this);
-        try {
-            parser.parseArgument(args);
-
-        } catch(CmdLineException e) {
-            System.err.println(e.getMessage());
-            System.err.println("java SampleMain [options...] arguments...");
-            parser.printUsage(System.err);
-            return;
-        }
+        parseArguments(args);
         Instant expire = date != null ? parseDate(date) : Instant.now().plus(3, ChronoUnit.DAYS);
         if(downloads == 0){
             downloads = -1;
@@ -41,6 +26,35 @@ public class FileShareCli {
             throw new IllegalArgumentException("File does not exist or was not found");
         }
         upload(file, expire, downloads);
+    }
+
+    private void parseArguments(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "-e", "--expire":
+                    date = args[++i];
+                    break;
+                case "-d", "--downloads":
+                    downloads = Integer.parseInt(args[++i]);
+                    break;
+                case "-f", "--file":
+                    file = new File(args[++i]);
+                    break;
+                default:
+                    System.err.println("Unknown option: " + args[i]);
+                    printUsage();
+                    System.exit(1);
+            }
+        }
+        if (file == null) {
+            System.err.println("File argument is required.");
+            printUsage();
+            System.exit(1);
+        }
+    }
+
+    private void printUsage() {
+        System.err.println("Usage: java FileShareCli [-e/--expire expire_date] [-d/--downloads max_downloads] -f/--file file_to_upload");
     }
 
     private void upload(File file, Instant expire, int downloads){

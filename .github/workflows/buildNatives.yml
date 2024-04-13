@@ -6,7 +6,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest] #ubuntu-latest
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
 
@@ -23,11 +23,8 @@ jobs:
       - name: Build FileShareCli
         run: ./gradlew nativeCompile
 
-      - name: Debug
-        run: tree
-
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
           name: fileshare-${{ matrix.os }}
-          path: ./build/native/nativeCompile/*
+          path: ./build/native/nativeCompile/fileshare*
