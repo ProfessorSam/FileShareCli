@@ -61,9 +61,9 @@ public class FileShareCli {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://file.professorsam.de/upload")
-                .addHeader("File-Expires", String.valueOf(expire.getEpochSecond()))
-                .addHeader("File-Downloads", String.valueOf(downloads))
-                .addHeader("File-Name", file.getName())
+                .addHeader("file-expires", String.valueOf(expire.getEpochSecond()))
+                .addHeader("file-downloads", String.valueOf(downloads))
+                .addHeader("file-name", file.getName())
                 .post(RequestBody.create(file, MediaType.get("application/octet-stream")))
                 .build();
         try(Response response = client.newCall(request).execute()){
@@ -71,7 +71,7 @@ public class FileShareCli {
                 System.out.println("Download link: " + response.body().string());
                 return;
             }
-            System.err.println("Could not upload file (Server error) " + response.code() + " " + response.message());
+            System.err.println("Could not upload file (Server error) - " + response.code() + ": " + response.message());
         }  catch (IOException e) {
             e.printStackTrace();
             System.err.println("Could not upload file");
